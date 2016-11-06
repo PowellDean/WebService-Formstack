@@ -82,24 +82,27 @@ Example:
     my $forms = $folder->getAllNames();
     foreach my $formName (@$forms) { ... }
 
-=head1 EXPORT
+=head1  ATTRIBUTES
 
-=over 4
+=head2 BASEURL
 
-=item C<getAllFolderIDs>
+Read-only. Specifies the base URL of the HTTP request. Always the same for
+Formstack: https://www.formstack.cm/api
 
-=item C<getAllFolderNames>
+=head2 APIVERSION
 
-=item C<getAllFormIDs>
+Read-only. Current version of the API we are using. This is rolled onto the
+new HTTP request that will be made. Current value: /v2.
 
-=item C<getAllFormNames>
+=head2 authKey
 
-=item C<getFormCount>
+Read-Write. Contains the oauth2 authentication token required to query
+the site. Should be set in the constructor, but can be set separately as
+long as it is done prior to making the HTTP request call.
 
-=item C<searchFolderNames>
+=head2 contentType
 
-=back
-
+Read-Write. Default value is 'application/xml'.
 
 =head1 SUBROUTINES/METHODS
 
