@@ -4,6 +4,7 @@ use 5.006;
 use JSON::Parse 'parse_json';
 use Moose;
 
+use Webservice::Formstack::FieldInfo;
 extends 'FormstackBase';
 
 has '_id'   => (
@@ -78,6 +79,11 @@ has '_lastSubmissionTime'   => (
     default => '',
 );
 
+has '_fields'   => (
+    is      => 'rw',
+    isa     => 'ArrayRef',
+);
+
 sub getAllIDs {
     my $self = shift;
     
@@ -124,6 +130,29 @@ sub getAllNames {
     return \@idList;
 }
 
+sub _getFieldInfo {
+    my $self = shift;
+    my $fieldRefs = shift;
+    
+    my @fieldList;
+    
+    foreach my $field (@$fieldRefs) {
+        my $fieldInfo = FieldInfo->new;
+        $fieldInfo->_id(${$field}{id});
+
+        next if (${$field}{label} eq "");
+        $fieldInfo->_label(${$field}{label});
+
+        $fieldInfo->_hideLabel(${$field}{hide_label});
+        $fieldInfo->_description(${$field}{description});
+        $fieldInfo->_name(${$field}{name});
+        
+        push @fieldList, $fieldInfo;
+    }
+    
+    return \@fieldList;
+}
+
 sub getForm {
     my $self = shift;
     my $id = shift;
@@ -145,6 +174,8 @@ sub getForm {
         $self->_submissionsToday(${$json}{submissions_today});
         $self->_lastSubmissionID(${$json}{last_submission_id});
         $self->_lastSubmissionTime(${$json}{last_submission_time});
+        
+        $self->_fields($self->_getFieldInfo(${$json}{fields}));
     }
     else {
         print "HTTP GET error code: ", $resp->code, "\n";
@@ -259,6 +290,12 @@ Returns a count of the number of forms currently in your account.
 
 Returns a hash reference containing the IDs and names of all forms in your
 account whose name matches <regex>
+
+=head1 PRIVATE METHODS
+
+=head2 _getFieldInfo
+
+Build an arrayref of field info items for the given form
 
 =head1 ACKNOWLEDGEMENTS
 
