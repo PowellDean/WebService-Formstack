@@ -4,7 +4,7 @@ use 5.006;
 use JSON::Parse 'parse_json';
 use Moose;
 
-use Webservice::Formstack::FieldInfo;
+use Webservice::Formstack::Field;
 extends 'FormstackBase';
 
 has '_id'   => (
@@ -130,14 +130,14 @@ sub getAllNames {
     return \@idList;
 }
 
-sub _getFieldInfo {
+sub _getFields {
     my $self = shift;
     my $fieldRefs = shift;
     
     my @fieldList;
     
     foreach my $field (@$fieldRefs) {
-        my $fieldInfo = FieldInfo->new;
+        my $fieldInfo = Field->new;
         $fieldInfo->_id(${$field}{id});
 
         next if (${$field}{label} eq "");
@@ -175,7 +175,7 @@ sub getForm {
         $self->_lastSubmissionID(${$json}{last_submission_id});
         $self->_lastSubmissionTime(${$json}{last_submission_time});
         
-        $self->_fields($self->_getFieldInfo(${$json}{fields}));
+        $self->_fields($self->_getFields(${$json}{fields}));
     }
     else {
         print "HTTP GET error code: ", $resp->code, "\n";

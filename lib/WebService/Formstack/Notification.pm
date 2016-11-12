@@ -1,4 +1,4 @@
-package FieldInfo;
+package Notification;
 
 use 5.006;
 use JSON::Parse 'parse_json';
@@ -12,22 +12,10 @@ has '_id'   => (
     default => 0,
 );
 
-has '_label' => (
+has '_form'   => (
     is      => 'rw',
-    isa     => 'Str',
-    default => '',
-);
-
-has '_hideLabel' => (
-    is      => 'rw',
-    isa     => 'Bool',
+    isa     => 'Int',
     default => 0,
-);
-
-has '_description' => (
-    is      => 'rw',
-    isa     => 'Str',
-    default => '',
 );
 
 has '_name' => (
@@ -36,7 +24,127 @@ has '_name' => (
     default => '',
 );
 
+has '_fromType' => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => '',
+);
+
+has '_fromValue'   => (
+    is      => 'rw',
+    isa     => 'Int',
+    default => 0,
+);
+
+has '_recipients' => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => '',
+);
+
+has '_subject' => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => '',
+);
+
+has '_type' => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => '',
+);
+
+has '_hideEmpty'   => (
+    is      => 'rw',
+    isa     => 'Bool',
+    default => 0,
+);
+
+has '_showSection'   => (
+    is      => 'rw',
+    isa     => 'Bool',
+    default => 0,
+);
+
+has '_message' => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => '',
+);
+
+has '_attachLimit'   => (
+    is      => 'rw',
+    isa     => 'Int',
+    default => 0,
+);
+
+has '_format' => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => '',
+);
+
 =pod
+
+=head1 ATTRIBUTES
+
+=over 12 
+
+=item C<_id>
+
+Integer: Holds the unique id for this notification
+
+=item C<_form>
+
+Integer: The form this notification is attached to
+
+=item C<_name>
+
+String: The name given to this notification. Does not need to be unique;
+several notifications can have the same name, though obviously they should not
+
+=item C<_fromType>
+
+String: What type of field does this notification come from (?)
+
+=item C<_fromValue>
+
+Integer: No idea what this is for!
+
+=item C<_recipients>
+
+A semi-colon delimited list of e-mail addresses this notification gets sent
+to
+
+=item C<_subject>
+
+String: Will appear in the subject line of the e-mail that will be sent
+
+=item C<_type>
+
+Boolean: No idea!
+
+=item C<_hideEmpty>
+
+Boolean: Hide fields in the email if have no value? 0 = false
+
+=item C<_showSection>
+
+Boolean: No idea!
+
+=item C<_message>
+
+String: Body of the e-mail message
+
+=item C<_attachLimit>
+
+Integer: Maximum number of attachments to this notification
+
+=item C<_format>
+
+String: Is the e-mail body in _plaintext_ or _html_?
+
+=back
 
 =head1 LICENSE AND COPYRIGHT
 
