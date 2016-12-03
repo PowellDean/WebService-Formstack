@@ -50,6 +50,8 @@ sub _getData {
     foreach my $hash (@$data) {
         my $fieldID = ${$hash}{field};
         $fields{$fieldID} = ${$hash}{value};
+#        print "DEBUG::$fieldID\n";
+#        print "       ", ${$hash}{value}, "\n";
     }
     
     return \%fields;
@@ -69,9 +71,7 @@ sub getSubmission {
         $self->_userAgent(${$json}{user_agent});
         $self->_remoteAddr(${$json}{remote_addr});
         $self->_form(${$json}{form});
-        $self->_getData(${$json}{data});
-        
-        $self->_data(_getData(${$json}{data}));
+        $self->_data($self->_getData(${$json}{data}));
     }
     
     return $self;

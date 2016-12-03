@@ -16,6 +16,8 @@ sub getDataFromSubmission {
     my $self = shift;
     my $subID = shift;
     
+    my %thisSubmission;
+    
     my $submission = Submission->new(
         authKey => $self->authKey());
     my $subData = $submission->getSubmission($subID);
@@ -23,7 +25,27 @@ sub getDataFromSubmission {
     my $form = Form->new(
         authKey => $self->authKey());
     my $formData = $form->getForm($subData->_form());
-    print "-->", $formData->_lastSubmissionTime();
+    my $fieldDefs = $formData->_fields();
+    my $fieldData = $subData->_data();
+    
+#    foreach (%$fieldData) {
+#        my $r = ${$fieldData}{id}
+#        print "--->$_\n";
+#    }
+#
+#    my @keys = (keys %{$fieldData});
+#    foreach my $key (@keys) { print ${$fieldData}{$key}; }
+
+    foreach my $field (@$fieldDefs) {
+        my $id = $field->_id;
+        my $name = $field->_name;
+        my $value = ${$fieldData}{$id};
+        #print "field definition: $id=$name\n";
+        #print "field value: ", ${$fieldData}{$id}, "\n\n";
+        $thisSubmission{$name} = $value;
+    };
+    
+    return \%thisSubmission;
 }
 
 =pod
